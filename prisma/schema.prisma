@@ -19,8 +19,8 @@ enum UserStatus {
 
 model User {
   id        String     @id @default(cuid()) @db.VarChar(36)
-  createdAt DateTime   @default(now()) @db.Date()
-  updatedAt DateTime   @default(now()) @updatedAt @db.Date()
+  createdAt DateTime   @default(now()) @db.Timestamp(3)
+  updatedAt DateTime   @default(now()) @updatedAt @db.Timestamp(3)
   status    UserStatus @default(active)
   username  String?
   password  String?    @db.VarChar(72)
@@ -41,8 +41,8 @@ model User {
 
 model Token {
   id        String    @id @default(cuid()) @db.VarChar(36)
-  createdAt DateTime  @default(now()) @db.Date()
-  expiredAt DateTime? @db.Date()
+  createdAt DateTime  @default(now()) @db.Timestamp(3)
+  expiredAt DateTime? @db.Timestamp(3)
   userId    String?   @db.VarChar(36)
   User      User?     @relation(fields: [userId], references: [id])
 
