@@ -54,8 +54,8 @@ model Token {
 
 model EthAccount {
   id        String   @id @default(cuid()) @db.VarChar(36)
-  createdAt DateTime @default(now()) @db.Date()
-  updatedAt DateTime @default(now()) @updatedAt @db.Date()
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(3)
   address   String   @db.VarChar(42)
   userId    String?  @unique @db.VarChar(36)
   User      User?    @relation(fields: [userId], references: [id])
@@ -78,8 +78,8 @@ enum PostStatus {
 
 model Post {
   id          String         @id @default(cuid()) @db.VarChar(36)
-  createdAt   DateTime       @default(now()) @db.Date()
-  updatedAt   DateTime       @default(now()) @updatedAt @db.Date()
+  createdAt   DateTime       @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime       @default(now()) @updatedAt @db.Timestamp(3)
   revision    Int            @default(1)
   createdById String         @db.VarChar(36)
   CreatedBy   User           @relation(fields: [createdById], references: [id])
@@ -102,7 +102,7 @@ model Post {
 
 model PostRevision {
   id        String   @id @default(cuid()) @db.VarChar(36)
-  createdAt DateTime @default(now()) @db.Date()
+  createdAt DateTime @default(now()) @db.Timestamp(3)
   postId    String   @db.VarChar(36)
   Post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
@@ -123,8 +123,8 @@ model PostRevision {
 
 model Tag {
   id          String   @id @default(cuid()) @db.VarChar(36)
-  createdAt   DateTime @default(now()) @db.Date()
-  updatedAt   DateTime @default(now()) @updatedAt @db.Date()
+  createdAt   DateTime @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamp(3)
   name        String   @db.VarChar(128)
   createdById String   @db.VarChar(36)
   CreatedBy   User     @relation(fields: [createdById], references: [id])
