@@ -8,21 +8,21 @@ import {
   PostsPageViewTagFilterStyled,
   PostsPageViewListStyled,
 } from './styles'
+import { Pagination } from 'src/components/Pagination'
 
 export const PostsPageView: React.FC<PostsPageViewProps> = ({
   posts,
-  count: _count,
-  loading,
+  count,
   tags,
   selectedTagId = null,
+  page,
 }) => {
-  if (loading) {
-    return <PostsPageViewStyled>Loading...</PostsPageViewStyled>
-  }
+  const totalPages = count ? Math.floor(count / 10) + 1 : 0
 
   return (
     <PostsPageViewStyled>
       <PostsPageViewTitleStyled>Posts</PostsPageViewTitleStyled>
+
       {tags && tags.length > 0 && (
         <PostsPageViewTagsFilterStyled>
           {tags.map((tag) => (
@@ -34,15 +34,14 @@ export const PostsPageView: React.FC<PostsPageViewProps> = ({
           ))}
         </PostsPageViewTagsFilterStyled>
       )}
-      {!posts.length ? (
-        <div>No posts yet</div>
-      ) : (
-        <PostsPageViewListStyled>
-          {posts.map((post) => (
-            <Post key={post.id} post={post} variant="list" />
-          ))}
-        </PostsPageViewListStyled>
-      )}
+
+      <PostsPageViewListStyled>
+        {posts.map((post) => (
+          <Post key={post.id} post={post} variant="list" />
+        ))}
+      </PostsPageViewListStyled>
+
+      <Pagination currentPage={page} totalPages={totalPages} />
     </PostsPageViewStyled>
   )
 }

@@ -16,6 +16,7 @@ import {
   PostTagsStyled,
   PostTagStyled,
 } from './styles'
+import { UserLink } from '../Link/User'
 
 type PostVariant = 'list' | 'full'
 
@@ -26,8 +27,7 @@ type PostProps = {
 
 export const Post: React.FC<PostProps> = ({ post, variant = 'list' }) => {
   const title = post.title || 'Untitled'
-  const author =
-    post.CreatedBy?.fullname || post.CreatedBy?.username || 'Anonymous'
+
   const isPublished = post.status === PostStatus.PUBLISHED
 
   const titleElement = (
@@ -51,7 +51,11 @@ export const Post: React.FC<PostProps> = ({ post, variant = 'list' }) => {
       )}
 
       <PostMetaStyled>
-        <PostAuthorStyled>{author}</PostAuthorStyled>
+        {post.CreatedBy && (
+          <PostAuthorStyled>
+            <UserLink user={post.CreatedBy} />
+          </PostAuthorStyled>
+        )}
         {post.createdAt && (
           <PostDateStyled>
             <FormattedDate value={post.createdAt} format="dateMedium" />

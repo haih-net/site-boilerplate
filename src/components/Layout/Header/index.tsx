@@ -26,6 +26,7 @@ export const Header: React.FC = () => {
       </LogoLink>
       <Nav>
         <Link href="/posts">Posts</Link>
+        <Link href="/users">Users</Link>
       </Nav>
     </HeaderStyled>
   )

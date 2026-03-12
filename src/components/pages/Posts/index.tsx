@@ -1,36 +1,19 @@
-import { useRouter } from 'next/router'
-import { useMemo } from 'react'
 import { Page } from '../_App/interfaces'
 import { PostsPageView } from './View'
 import { postsPageGetInitialProps } from './postsPageGetInitialProps'
-import {
-  usePostsConnectionQuery,
-  useTagsQuery,
-  PostStatus,
-} from 'src/gql/generated'
+import { usePostsConnectionQuery, useTagsQuery } from 'src/gql/generated'
 import { SeoHeaders } from 'src/components/seo/SeoHeaders'
+import { PostsPageProps } from './interfaces'
+import { getPostsConnectionQueryVariables } from './helpers'
 
-export const PostsPage: Page = () => {
-  const router = useRouter()
-
-  const selectedTagId = useMemo(() => {
-    const tags = router.query.tags
-    if (!tags) {
-      return null
-    }
-    if (Array.isArray(tags)) {
-      return tags[0] ?? null
-    }
-    return tags
-  }, [router.query.tags])
-
+export const PostsPage: Page<PostsPageProps> = ({ page, tagIds }) => {
   const tagsResponse = useTagsQuery()
 
   const postsResponse = usePostsConnectionQuery({
-    variables: {
-      where: { status: PostStatus.PUBLISHED },
-      tagIds: selectedTagId ? [selectedTagId] : undefined,
-    },
+    variables: getPostsConnectionQueryVariables({
+      page,
+      tagIds,
+    }),
   })
 
   const posts = postsResponse.data?.posts
@@ -43,9 +26,9 @@ export const PostsPage: Page = () => {
       <PostsPageView
         posts={posts ?? []}
         count={count}
-        loading={postsResponse.loading}
         tags={tags ?? []}
-        selectedTagId={selectedTagId}
+        // selectedTagId={tagIds}
+        page={page}
       />
     </>
   )
